@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Corpus Collection System (CoCoS) - Upload Form</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-1.3.0.min.css">
+</head>
+<body style="padding-top: 40px">
+	
+	{% include "repository/topbar.html" %}
+
+    <div class="container">
+	
+	<h1>Upload a new corpus description</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+           <h3>{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+	
+	<form action="/upload/" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+		{% csrf_token %}
+
+        {% for field in form %}
+            <div class="clearfix">
+                {% for error in field.errors %}
+                    <span class="label important">Important</span> {{ error }}
+                {% endfor %}
+                {{ field.label_tag }}
+
+                <div class="input">
+                    {% if field.html_name == "location" or field.html_name == "language" or field.html_name == "annotation" or field.html_name == "file" %}
+                        {{ field }}
+                    {% endif %}
+
+                    {% if field.html_name == "name" %}
+                        <input class="span8" id="id_name" type="text" name="name" maxlength="50" />
+                    {% endif %}
+
+                    {% if field.html_name == "coli_path" %}
+                        <input class="span8" id="id_coli_path" type="text" name="coli_path" maxlength="100" />
+                    {% endif %}
+
+                    {% if field.html_name == "dfki_path" %}
+                        <input class="span8" id="id_coli_path" type="text" name="coli_path" maxlength="100" />
+                    {% endif %}
+
+                    {% if field.html_name == "description" %}
+                        <textarea class="span8" id="id_description" rows="10" cols="40" name="description"></textarea>
+                    {% endif %}
+
+                    {% if field.html_name == "comment" %}
+                        <textarea class="span8" id="id_comment" rows="10" cols="40" name="comment"></textarea>
+                    {% endif %}
+
+                    {% if field.html_name == "license_holder" %}
+                        <input class="span8" id="id_license_holder" type="text" name="license_holder" maxlength="100" />
+                    {% endif %}
+
+                    {% if field.html_name == "contact" %}
+                        <input class="span8" id="id_contact" type="text" name="contact" maxlength="75" />
+                    {% endif %}
+
+
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Submit">
+	        <input type="reset" class="btn" value="Cancel">
+	    </div>
+	</form>
+		
+
+
+
+
+
+    </div>
+
+</body>
+</html>

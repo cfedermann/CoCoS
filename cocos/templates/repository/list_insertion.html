@@ -1,0 +1,9 @@
+<ul>
+	{% for corpus in corpus_list %}
+		<li>
+			<p><a href="{% url corpus-details corpus.id %}">{{ corpus.name }}</a></p>
+		</li>
+	{% empty %}
+		<p>Sorry, there is actually no corpus in the database to display.</p>
+	{% endfor %}
+</ul>

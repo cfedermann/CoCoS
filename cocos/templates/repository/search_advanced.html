@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Corpus Collection System (CoCoS) - Search Interface</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-1.3.0.min.css">
+</head>
+<body style="padding-top: 40px">
+
+    {% include "repository/topbar.html" %}
+
+    <div class="container">
+	
+	<h1>Search for corpus descriptions</h1>
+	
+	<form action="/advanced/" class="form-stacked" method="post" accept-charset="UTF-8">
+		{% csrf_token %}
+		{% for field in form %}
+            <div class="clearfix">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+        {% endfor %}
+
+		<div class="actions">
+            <input type="submit" class="btn primary" value="Search Catalogue">
+			<input type="button" class="btn" value="Simple Search" onclick="javascript:window.location.href='/search/';">
+        </div>
+	</form>
+	
+	{% if results %}
+	    <p>{{results|length}} Corpus Description{{results|length|pluralize}} matching your query</p>
+	    {% with results as corpus_list %}
+	        {% include "repository/list_insertion.html" %}
+	    {% endwith %}
+	{% endif %}
+    </div>
+	
+</body>
+</html>

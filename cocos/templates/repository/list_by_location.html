@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>Corpus Collection System (CoCoS) - Corpus list by location</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-1.3.0.min.css">
+</head>
+<body style="padding-top: 40px">
+
+    {% include "repository/topbar.html" %}
+
+    <div class="container">
+
+        <div>
+            <h1>Corpus descriptions hosted by {{ location|upper }}</h1>
+
+            {% if location == "coli" %}
+                <ul class="tabs">
+                    <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                    <li class="active"><a href="#">CoLi</a></li>
+                    <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+                </ul>
+                <img src="{{ STATIC_URL }}img/coli_big.jpg" width="187" height="80"
+                     alt="Corpora hosted by Computational Linguistics Department">
+            {% endif %}
+
+            {% if location == "dfki" %}
+                <ul class="tabs">
+                    <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                    <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+                    <li class="active"><a href="#">DFKI</a></li>
+                </ul>
+                <img src="{{ STATIC_URL }}img/dfki_big.jpg" width="187" height="80"
+                     alt="Corpora hosted by DFKI">
+            {% endif %}
+        </div>
+
+        {% include "repository/list_insertion.html" %}
+
+        <div class="pagination">
+            <ul>
+                {% include "repository/pagination.html" %}
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

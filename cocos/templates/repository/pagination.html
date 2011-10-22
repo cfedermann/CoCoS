@@ -1,0 +1,50 @@
+{% if page_obj.has_previous %}
+    {% if location %}
+        {% if location == "coli" %}
+            <li class="prev"><a href="{% url corpus-list-by-location location='coli' page=page_obj.previous_page_number %}">&larr; Previous</a></li>
+        {% endif %}
+
+        {% if location == "dfki" %}
+            <li class="prev"><a href="{% url corpus-list-by-location location='dfki' page=page_obj.previous_page_number %}">&larr; Previous</a></li>
+        {% endif %}
+
+    {% else %}
+        <li class="prev"><a href="{% url corpus-list page=page_obj.previous_page_number %}">&larr; Previous</a></li>
+    {% endif %}
+
+{% else %}
+    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
+{% endif %}
+
+{% for page_number in paginator.page_range %}
+    {% if location %}
+        {% if location == "coli" %}
+            <li><a href="{% url corpus-list-by-location location='coli' page=page_number %}">{{ page_number }}</a></li>
+        {% endif %}
+
+        {% if location == "dfki" %}
+            <li><a href="{% url corpus-list-by-location location='dfki' page=page_number %}">{{ page_number }}</a></li>
+        {% endif %}
+
+    {% else %}
+        <li><a href="{% url corpus-list page=page_number %}">{{ page_number }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+    {% if location %}
+        {% if location == "coli" %}
+            <li class="next"><a href="{% url corpus-list-by-location location='coli' page=page_obj.next_page_number %}">Next &rarr;</a></li>
+        {% endif %}
+
+        {% if location == "dfki" %}
+            <li class="next"><a href="{% url corpus-list-by-location location='dfki' page=page_obj.next_page_number %}">Next &rarr;</a></li>
+        {% endif %}
+
+    {% else %}
+        <li class="next"><a href="{% url corpus-list page=page_obj.next_page_number %}">Next &rarr;</a></li>
+    {% endif %}
+
+{% else %}
+    <li class="next disabled"><a href="#">Next &rarr;</a></li>
+{% endif %}
