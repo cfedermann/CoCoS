@@ -5,7 +5,7 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 """
 
 from django.contrib import admin
-from repository.models import CorpusDescription
+from repository.models import CorpusDescription, FeedbackMessage
 
 class CorpusDescriptionAdmin(admin.ModelAdmin):
     """
@@ -64,8 +64,6 @@ class CorpusDescriptionAdmin(admin.ModelAdmin):
     
     date_hierarchy = 'date_of_first_creation'
 
-
-    
     list_display = ('name', 'location', 'language', 'annotation', 
       'license_holder', 'contact', 'file', 'uploader', 'date_of_first_creation',
       'date_of_last_modification')
@@ -75,4 +73,42 @@ class CorpusDescriptionAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description', 'comment')
 
 
+class FeedbackMessageAdmin(admin.ModelAdmin):
+    """
+    This class provides formatting options for the
+    FeedbackMessage model admin interface.
+    """
+
+    def has_change_permission(self, request, obj=None):
+        """
+        Return True if editing an object is permitted;
+        return False otherwise.
+        """
+        has_class_permission = super(FeedbackMessageAdmin, self)\
+          .has_change_permission(request, obj)
+        if not has_class_permission:
+            return False
+        if obj is not None and not request.user.is_superuser and \
+          request.user.id != obj.user.id:
+            return False
+        return True
+
+
+    def queryset(self, request):
+        """
+        Show users who are not superusers only
+        their own sent feedback messages.
+        """
+        if request.user.is_superuser:
+            return FeedbackMessage.objects.all()
+        return FeedbackMessage.objects.filter(user=request.user)
+
+
+    list_display = ('subject', 'user', 'text', 'date_of_submission')
+    list_filter = ('date_of_submission',)
+    exclude = ('user',)
+    search_fields = ('text',)
+
+
 admin.site.register(CorpusDescription, CorpusDescriptionAdmin)
+admin.site.register(FeedbackMessage, FeedbackMessageAdmin)

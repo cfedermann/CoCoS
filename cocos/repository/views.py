@@ -4,15 +4,17 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
          Peter Stahl <pstahl@coli.uni-saarland.de>
 """
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic import ListView, DetailView, TemplateView, \
-  CreateView
-from repository.forms import SimpleSearch, AdvancedSearch
-from repository.models import CorpusDescription
+from django.views.generic import ListView, DetailView, TemplateView
+from repository.forms import SimpleSearch, AdvancedSearch, \
+    CorpusDescriptionForm, FeedbackMessageForm
+from repository.models import CorpusDescription, FeedbackMessage
 from settings import ITEMS_PER_PAGE
 import logging
 
@@ -59,13 +61,6 @@ class CorpusDetailView(DetailView):
 class MainPageView(TemplateView):
     """Return a frontpage that links to browse and upload subpages."""
     template_name = 'repository/frontpage.html'
-
-
-class UploadView(CreateView):
-    """Render a form for submitting new corpus descriptions."""
-    model = CorpusDescription
-    success_url = '/'
-    template_name = 'repository/upload.html'
 
 
 def search(request):
@@ -179,3 +174,61 @@ def log_user_out(request):
     logout(request)
     return render_to_response('repository/frontpage.html',
       context_instance=RequestContext(request))
+
+
+@login_required(login_url='/accounts/login')
+def upload(request):
+    """Render a form for submitting new corpus descriptions."""
+    if request.method == 'POST':
+        form = CorpusDescriptionForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_corpus = form.save(commit=False)
+            new_corpus.uploader = request.user
+            new_corpus.save()
+
+            logger.info(
+              'New corpus description uploaded by user "{}". Title: "{}".'
+              .format(new_corpus.uploader, new_corpus.name.encode('utf-8')))
+
+            messages.success(request, 'Corpus description uploaded successfully!')
+        else:
+            logger.warning(
+              'User "{}" tried to upload a new corpus description but failed.'
+              .format(request.user))
+
+            messages.error(request,
+              'Upload has failed! Please fill in all required slots.')
+    else:
+        form = CorpusDescriptionForm()
+
+    return render_to_response('repository/upload.html',
+      {'form': form}, context_instance=RequestContext(request))
+
+
+@login_required(login_url='/accounts/login')
+def feedback(request):
+    """Render a form for submitting new feedback messages."""
+    if request.method == 'POST':
+        form = FeedbackMessageForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_feedback = form.save(commit=False)
+            new_feedback.user = request.user
+            new_feedback.save()
+
+            logger.info(
+              'New feedback message uploaded by user "{}". Subject: "{}".'
+              .format(new_feedback.user, new_feedback.subject.encode('utf-8')))
+
+            messages.success(request, 'Thanks for your feedback! We will deal with it soon.')
+        else:
+            logger.warning(
+              'User "{}" tried to send a feedback message but failed.'
+              .format(request.user))
+
+            messages.error(request,
+              'Feedback submission has failed! Please fill in all required slots.')
+    else:
+        form = FeedbackMessageForm
+
+    return render_to_response('repository/feedback.html',
+      {'form': form}, context_instance=RequestContext(request))

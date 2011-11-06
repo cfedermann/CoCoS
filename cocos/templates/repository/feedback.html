@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Corpus Collection System (CoCoS) - Feedback Form</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-1.3.0.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/overrides.css">
+</head>
+<body>
+	
+	{% include "repository/topbar.html" %}
+
+    <div class="container">
+	    <div class="content">
+
+            <div class="page-header">
+                <h1>Feedback <small>opinions, suggestions, criticisms</small></h1>
+            </div>
+
+            <form action="/feedback/" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="alert-message info">
+                    <p>All fields are required!</p>
+                </div>
+
+                {% if messages %}
+
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert-message error">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if message.tags == 'success' %}
+                        <div class="alert-message success">
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            {% endif %}
+
+                {% for field in form %}
+
+                    <div class="clearfix">
+
+                        {{ field.label_tag }}
+
+                        {% if field.html_name == "subject" %}
+                            {% if field.errors %}
+
+                                <div class="clearfix error">
+
+                                    <input class="span8" id="id_subject" type="text" name="subject" maxlength="100" />
+
+                                    {% for error in field.errors %}
+                                        <span class="help-inline">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+
+                            {% else %}
+                                <input class="span8" id="id_subject" type="text" name="subject" maxlength="100" />
+
+                            {% endif %}
+                        {% endif %}
+
+                        {% if field.html_name == "text" %}
+                            {% if field.errors %}
+
+                                <div class="clearfix error">
+
+                                    <textarea class="span8" id="id_text" rows="10" cols="40" name="text"></textarea>
+
+                                    {% for error in field.errors %}
+                                        <span class="help-inline">{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+
+                            {% else %}
+                                <textarea class="span8" id="id_text" rows="10" cols="40" name="text"></textarea>
+
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+
+                <div class="actions">
+                    <input type="submit" class="btn primary" value="Submit">
+                    <input type="reset" class="btn" value="Cancel">
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

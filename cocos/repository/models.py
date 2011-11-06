@@ -9,7 +9,7 @@ from django.db import models
 
 MODEL_VERSION = 1
 
-LANGUAGES = (
+LANGUAGES = [
       ('CN', 'Chinese'),
       ('DE', 'German'),
       ('EN', 'English'),
@@ -17,12 +17,12 @@ LANGUAGES = (
       ('FR', 'French'),
       ('IT', 'Italian'),
       ('ML', 'Multilingual')
-    )
+    ]
 
-LOCATIONS = (
+LOCATIONS = [
       ('DFKI', 'DFKI'),
       ('COLI', 'CoLi'),
-    )
+    ]
 
 class CorpusDescription(models.Model):
     """The corpus description model.
@@ -72,7 +72,22 @@ class CorpusDescription(models.Model):
       help_text="Timestamp for the last modification",
       verbose_name="date of last modification")
 
-
-
     def __unicode__(self):
         return self.name
+
+
+class FeedbackMessage(models.Model):
+    """The feedback message model.
+
+    This model provides the following fields:
+    Mandatory fields: Subject, Text.
+    """
+
+    user = models.ForeignKey(User, related_name='+')
+    subject = models.CharField(max_length=100)
+    text = models.TextField()
+    date_of_submission = models.DateTimeField(auto_now_add=True,
+      verbose_name="date of submission")
+
+    def __unicode__(self):
+        return self.subject

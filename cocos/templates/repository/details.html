@@ -4,75 +4,81 @@
 <head>
 	<title>Corpus Details</title>
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-1.3.0.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/overrides.css">
 </head>
-<body style="padding-top: 40px">
+<body>
 	{% include "repository/topbar.html" %}
 
     <div class="container">
+        <div class="content">
 
-        <h1>Details about <em>{{ corpus.name }}</em></h1>
+            <div class="page-header">
+                <h1>Details <small>{{ corpus.name }}</small></h1>
+            </div>
 
-        <table class="zebra-striped">
 
-            <tbody>
-                <tr>
-                    <td>Location:</td>
-                    <td>{{ corpus.get_location_display }}</td>
-                </tr>
+            <table class="zebra-striped">
 
-                {% if corpus.coli_path %}
+                <tbody>
                     <tr>
-                        <td>Path on CoLi server:</td>
-                        <td>{{ corpus.coli_path }}</td>
+                        <td>Location:</td>
+                        <td>{{ corpus.get_location_display }}</td>
                     </tr>
-                {% endif %}
 
-                {% if corpus.dfki_path %}
+                    {% if corpus.coli_path %}
+                        <tr>
+                            <td>Path on CoLi server:</td>
+                            <td>{{ corpus.coli_path }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if corpus.dfki_path %}
+                        <tr>
+                            <td>Path on DFKI server:</td>
+                            <td>{{ corpus.dfki_path }}</td>
+                        </tr>
+                    {% endif %}
+
                     <tr>
-                        <td>Path on DFKI server:</td>
-                        <td>{{ corpus.dfki_path }}</td>
+                        <td>Language:</td>
+                        <td>{{ corpus.get_language_display }}</td>
                     </tr>
-                {% endif %}
 
-                <tr>
-                    <td>Language:</td>
-                    <td>{{ corpus.get_language_display }}</td>
-                </tr>
-
-                <tr>
-                    <td>Annotation:</td>
-                    <td>{{ corpus.annotation }}</td>
-                </tr>
-
-                {% if corpus.description %}
                     <tr>
-                        <td>Description:</td>
-                        <td>{{ corpus.description }}</td>
+                        <td>Annotation:</td>
+                        <td>{{ corpus.annotation }}</td>
                     </tr>
-                {% endif %}
 
-                {% if corpus.comment %}
-                    <tr>
-                        <td>Comment:</td>
-                        <td>{{ corpus.comment }}</td>
-                    </tr>
-                {% endif %}
+                    {% if corpus.description %}
+                        <tr>
+                            <td>Description:</td>
+                            <td>{{ corpus.description }}</td>
+                        </tr>
+                    {% endif %}
 
-                {% if corpus.license_holder %}
-                    <tr>
-                        <td>License holder:</td>
-                        <td>{{ corpus.license_holder }}</td>
-                    </tr>
-                {% endif %}
+                    {% if corpus.comment %}
+                        <tr>
+                            <td>Comment:</td>
+                            <td>{{ corpus.comment }}</td>
+                        </tr>
+                    {% endif %}
 
-                {% if corpus.contact %}
-                    <tr>
-                        <td>Contact:</td>
-                        <td><a href="mailto:{{ corpus.contact }}">{{ corpus.contact }}</a></td>
-                    </tr>
-                {% endif %}
-            </tbody>
-	    </table>
+                    {% if corpus.license_holder %}
+                        <tr>
+                            <td>License holder:</td>
+                            <td>{{ corpus.license_holder }}</td>
+                        </tr>
+                    {% endif %}
+
+                    {% if corpus.contact %}
+                        <tr>
+                            <td>Contact:</td>
+                            <td><a href="mailto:{{ corpus.contact }}">{{ corpus.contact }}</a></td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
 
     </div>
 	
