@@ -14,7 +14,7 @@ from django.template import RequestContext
 from django.views.generic import ListView, DetailView, TemplateView
 from repository.forms import SimpleSearch, AdvancedSearch, \
     CorpusDescriptionForm, FeedbackMessageForm
-from repository.models import CorpusDescription, FeedbackMessage
+from repository.models import CorpusDescription
 from settings import ITEMS_PER_PAGE
 import logging
 
@@ -190,7 +190,8 @@ def upload(request):
               'New corpus description uploaded by user "{}". Title: "{}".'
               .format(new_corpus.uploader, new_corpus.name.encode('utf-8')))
 
-            messages.success(request, 'Corpus description uploaded successfully!')
+            messages.success(request,
+              'Corpus description uploaded successfully!')
         else:
             logger.warning(
               'User "{}" tried to upload a new corpus description but failed.'
@@ -219,14 +220,16 @@ def feedback(request):
               'New feedback message uploaded by user "{}". Subject: "{}".'
               .format(new_feedback.user, new_feedback.subject.encode('utf-8')))
 
-            messages.success(request, 'Thanks for your feedback! We will deal with it soon.')
+            messages.success(request,
+              'Thanks for your feedback! We will deal with it soon.')
         else:
             logger.warning(
               'User "{}" tried to send a feedback message but failed.'
               .format(request.user))
 
             messages.error(request,
-              'Feedback submission has failed! Please fill in all required slots.')
+              'Feedback submission has failed! ' \
+              'Please fill in all required slots.')
     else:
         form = FeedbackMessageForm
 

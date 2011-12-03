@@ -10,13 +10,15 @@ from django.db import models
 MODEL_VERSION = 1
 
 LANGUAGES = [
+      ('AR', 'Arabic'),
       ('CN', 'Chinese'),
       ('DE', 'German'),
       ('EN', 'English'),
       ('ES', 'Spanish'),
       ('FR', 'French'),
       ('IT', 'Italian'),
-      ('ML', 'Multilingual')
+      ('ML', 'Multilingual'),
+      ('TR', 'Turkish')
     ]
 
 LOCATIONS = [

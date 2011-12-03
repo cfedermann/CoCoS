@@ -14,7 +14,6 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
-    ('Peter Stahl', 'pstahl@coli.uni-saarland.de'),
 )
 
 MANAGERS = ADMINS
@@ -174,6 +173,6 @@ LOGGING = {
     }
 }
 
-ITEMS_PER_PAGE = 6
+ITEMS_PER_PAGE = 20
 
 FORCE_SCRIPT_NAME = ""
