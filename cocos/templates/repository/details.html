@@ -16,6 +16,11 @@
                 <h1>Details <small>{{ corpus.name }}</small></h1>
             </div>
 
+            <ul class="tabs">
+                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+                <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+            </ul>
 
             <table class="zebra-striped">
 
@@ -46,7 +51,7 @@
 
                     <tr>
                         <td>Annotation:</td>
-                        <td>{{ corpus.annotation }}</td>
+                        <td>{{ corpus.annotation|yesno:"Yes, No, Maybe" }}</td>
                     </tr>
 
                     {% if corpus.description %}

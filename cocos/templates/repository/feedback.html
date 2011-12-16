@@ -20,19 +20,13 @@
             <form action="/feedback/" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <div class="alert-message info">
-                    <p>All fields are required!</p>
-                </div>
+
+                <p><span class="label notice">Please note</span> All fields are required!</p>
+
 
                 {% if messages %}
 
                 {% for message in messages %}
-                    {% if message.tags == 'error' %}
-                        <div class="alert-message error">
-                            <p>{{ message }}</p>
-                        </div>
-                    {% endif %}
-
                     {% if message.tags == 'success' %}
                         <div class="alert-message success">
                             <p>{{ message }}</p>
@@ -89,7 +83,7 @@
 
                 <div class="actions">
                     <input type="submit" class="btn primary" value="Submit">
-                    <input type="reset" class="btn" value="Cancel">
+                    <input type="reset" class="btn" value="Reset Changes">
                 </div>
             </form>
         </div>
