@@ -21,7 +21,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '{0}/database/sqlite.db'.format(ROOT_PATH)
+        'NAME': '{0}/sqlite.db'.format(ROOT_PATH)
     }
 }
 
@@ -151,7 +151,7 @@ LOGGING = {
     'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'logs/cocos.log',
+            'filename': 'cocos.log',
             'formatter': 'basic',
             'level': 'DEBUG'
         },

@@ -13,24 +13,41 @@ from repository.models import CorpusDescription, FeedbackMessage
 
 setup_environ(settings)
 
-def export_data(datatype, filename):
+def usage():
+    """Prints usage instructions to screen."""
+    print "\nSet DJANGO_SETTINGS_MODULE to CoCoS settings like this:"
+    print "\texport DJANGO_SETTINGS_MODULE=settings"
+    print "Usage: python export_data.py <output.{xml|json}>\n"
+
+
+def export_data(filename):
     """
     Export the data currently being in the database
     and save it in folder 'exported_data'.
     """
+    if filename.endswith("xml"):
+        serializer = serializers.get_serializer("xml")
+    elif filename.endswith("json"):
+        serializer = serializers.get_serializer("json")
+    else:
+        raise RuntimeError("File name must be of extension 'xml' or 'json'!")
+
     if not os.path.isdir("exported_data"):
         os.mkdir("exported_data")
     output = open("exported_data/" + filename, "w")
-    serializer = serializers.get_serializer(datatype)
+
     new_serializer = serializer()
     all_objects = list(CorpusDescription.objects.all()) + \
       list(FeedbackMessage.objects.all())
     new_serializer.serialize(all_objects, stream=output)
     output.close()
 
-    print "Model data successfully written to", filename
+    print "\tModel data successfully written to", filename
 
 
 if __name__ == "__main__":
-    # Exporting the DJANGO_SETTINGS_MODULE does not work here
-    export_data(sys.argv[1], sys.argv[2])
+    if len(sys.argv) != 2:
+        usage()
+        sys.exit(-1)
+
+    export_data(sys.argv[1])
