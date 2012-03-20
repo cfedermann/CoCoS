@@ -5,6 +5,7 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 """
 
 from django import forms
+
 from models import CorpusDescription, FeedbackMessage, LOCATIONS, LANGUAGES
 
 LOCATIONS_AND_EMPTY = [('', '---------')] + LOCATIONS
@@ -18,7 +19,7 @@ class CorpusDescriptionForm(forms.ModelForm):
         A meta class for specifying which model this ModelForm is built upon.
         """
         model = CorpusDescription
-        exclude = ('uploader',)
+        exclude = ('contributor',)
 
 
 class FeedbackMessageForm(forms.ModelForm):
@@ -32,6 +33,7 @@ class SimpleSearch(forms.Form):
     """Render a single text input."""
     keywords = forms.CharField(max_length=200, required=False)
     
+
 class AdvancedSearch(forms.Form):
     """Render a complex search form for different model fields."""
     name = forms.CharField(max_length=200, required=False, label="Name")

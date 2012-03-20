@@ -60,10 +60,10 @@ class CorpusDescription(models.Model):
       help_text="Who is the license holder of this corpus?")
     contact = models.EmailField(blank=True,
       help_text="The license holder's email address")
-    file = models.FileField(upload_to="files/%Y/%m/%d", blank=True)
+    sample_file = models.FileField(upload_to="files/%Y/%m/%d", blank=True)
 
     # The user who uploaded the current corpus description
-    uploader = models.ForeignKey(User, related_name='+')
+    contributor = models.ForeignKey(User, related_name='+')
 
     # Timestamp dates for the admin backend
     date_of_first_creation = models.DateTimeField(auto_now_add=True,

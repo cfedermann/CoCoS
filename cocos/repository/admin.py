@@ -35,7 +35,7 @@ class CorpusDescriptionAdmin(admin.ModelAdmin):
         """
         if request.user.is_superuser:
             return CorpusDescription.objects.all()
-        return CorpusDescription.objects.filter(uploader=request.user)
+        return CorpusDescription.objects.filter(contributor=request.user)
 
 
     def save_model(self, request, obj, form, change):
@@ -56,7 +56,7 @@ class CorpusDescriptionAdmin(admin.ModelAdmin):
       ('Optional fields', {
         'classes': ('collapse',), 
         'fields': ('description', 'comment', 'license_holder', 'contact',
-                   'file')
+                   'sample_file')
       })
     )
     
@@ -65,7 +65,7 @@ class CorpusDescriptionAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_of_first_creation'
 
     list_display = ('name', 'location', 'language', 'annotation', 
-      'license_holder', 'contact', 'file', 'uploader', 'date_of_first_creation',
+      'license_holder', 'contact', 'sample_file', 'contributor', 'date_of_first_creation',
       'date_of_last_modification')
     list_filter = ('location', 'language', 'annotation',
       'license_holder', 'date_of_first_creation', 'date_of_last_modification')
