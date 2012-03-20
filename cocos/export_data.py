@@ -5,19 +5,18 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 """
 
 import os
-import sys
 import settings
+import sys
+
 from django.core import serializers
 from django.core.management import setup_environ
-from repository.models import CorpusDescription, FeedbackMessage
-
 setup_environ(settings)
+
+from repository.models import CorpusDescription, FeedbackMessage
 
 def usage():
     """Prints usage instructions to screen."""
-    print "\nSet DJANGO_SETTINGS_MODULE to CoCoS settings like this:"
-    print "\texport DJANGO_SETTINGS_MODULE=settings"
-    print "Usage: python export_data.py <output.{xml|json}>\n"
+    print "\nUsage: python export_data.py <filename.{xml|json}>\n"
 
 
 def export_data(filename):
