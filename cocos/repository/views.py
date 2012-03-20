@@ -4,19 +4,21 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
          Peter Stahl <pstahl@coli.uni-saarland.de>
 """
 
+import logging
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.views.generic import ListView, DetailView, TemplateView
+
 from repository.forms import SimpleSearch, AdvancedSearch, \
     CorpusDescriptionForm, FeedbackMessageForm
 from repository.models import CorpusDescription
 from settings import ITEMS_PER_PAGE
-import logging
 
 logger = logging.getLogger('cocos')
 
@@ -90,8 +92,7 @@ def search(request):
 
     dictionary = {'form':form, 'results':results}
 
-    return render_to_response('repository/search.html',
-      dictionary, context_instance=RequestContext(request))
+    return render(request, 'repository/search.html', dictionary)
 
 
 def advanced_search(request):
@@ -134,8 +135,7 @@ def advanced_search(request):
 
     dictionary = {'form':form, 'results':results}
 
-    return render_to_response('repository/search_advanced.html',
-      dictionary, context_instance=RequestContext(request))
+    return render(request, 'repository/search_advanced.html', dictionary)
 
 
 def log_user_in(request):
@@ -163,9 +163,9 @@ def log_user_in(request):
     else:
         form = AuthenticationForm()
 
-    return render_to_response('repository/login.html',
-      {'form': form, 'error': error_message},
-      context_instance=RequestContext(request))
+    dictionary = {'form': form, 'error': error_message}
+
+    return render(request, 'repository/login.html', dictionary)
 
 
 def log_user_out(request):
@@ -202,8 +202,9 @@ def upload(request):
     else:
         form = CorpusDescriptionForm()
 
-    return render_to_response('repository/upload.html',
-      {'form': form}, context_instance=RequestContext(request))
+    dictionary = {'form': form}
+
+    return render(request, 'repository/upload.html', dictionary)
 
 
 @login_required(login_url='/accounts/login')
@@ -233,5 +234,6 @@ def feedback(request):
     else:
         form = FeedbackMessageForm
 
-    return render_to_response('repository/feedback.html',
-      {'form': form}, context_instance=RequestContext(request))
+    dictionary = {'form': form}
+
+    return render(request, 'repository/feedback.html', dictionary)
