@@ -104,10 +104,10 @@ class FeedbackMessageAdmin(admin.ModelAdmin):
         return FeedbackMessage.objects.filter(user=request.user)
 
 
-    list_display = ('subject', 'user', 'text', 'date_of_submission')
+    list_display = ('subject', 'status', 'user', 'message', 'date_of_submission')
     list_filter = ('date_of_submission',)
     exclude = ('user',)
-    search_fields = ('text',)
+    search_fields = ('message',)
 
 
 admin.site.register(CorpusDescription, CorpusDescriptionAdmin)

@@ -215,6 +215,8 @@ def feedback(request):
         if form.is_valid():
             new_feedback = form.save(commit=False)
             new_feedback.user = request.user
+            # The status of a new message is set to 'Open' by default
+            new_feedback.status = 'O'
             new_feedback.save()
 
             logger.info(

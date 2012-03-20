@@ -60,12 +60,12 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if field.html_name == "text" %}
+                        {% if field.html_name == "message" %}
                             {% if field.errors %}
 
                                 <div class="clearfix error">
 
-                                    <textarea class="span8" id="id_text" rows="10" cols="40" name="text"></textarea>
+                                    <textarea class="span8" id="id_message" rows="10" cols="40" name="message"></textarea>
 
                                     {% for error in field.errors %}
                                         <span class="help-inline">{{ error }}</span>
@@ -73,7 +73,7 @@
                                 </div>
 
                             {% else %}
-                                <textarea class="span8" id="id_text" rows="10" cols="40" name="text"></textarea>
+                                <textarea class="span8" id="id_message" rows="10" cols="40" name="message"></textarea>
 
                             {% endif %}
                         {% endif %}

@@ -26,7 +26,7 @@ class FeedbackMessageForm(forms.ModelForm):
 
     class Meta:
         model = FeedbackMessage
-        exclude = ('user',)
+        exclude = ('user', 'status')
 
         
 class SimpleSearch(forms.Form):
