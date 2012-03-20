@@ -74,6 +74,9 @@ class CorpusDescription(models.Model):
       help_text="Timestamp for the last modification",
       verbose_name="date of last modification")
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return self.name
 
