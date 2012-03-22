@@ -1,0 +1,37 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Login Form{% endblock title %}
+
+{% block page-header %}<h1>Please log in</h1>{% endblock page-header %}
+
+{% block content %}
+    <form action="{% url login-form %}" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="clearfix">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+
+
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="login">
+            <input type="hidden" name="next" value="upload/">
+        </div>
+
+    </form>
+
+    {% if error == "not_active" %}
+        <p>Your account has been disabled. Please contact the administrator.</p>
+
+    {% else %}
+
+        {% if error == "not_authenticated" %}
+            <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
+
+    {% endif %}
+{% endblock content %}

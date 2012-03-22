@@ -1,0 +1,30 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Advanced Search{% endblock title %}
+
+{% block page-header %}<h1>Search <small>for corpus descriptions</small></h1>{% endblock page-header %}
+
+{% block content %}
+    <form action="/advanced/" class="form-stacked" method="post" accept-charset="UTF-8">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="clearfix">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+        {% endfor %}
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Search Catalogue">
+            <input type="button" class="btn" value="Simple Search" onclick="javascript:window.location.href='/search/';">
+            <input type="reset" class="btn" value="Reset Changes">
+        </div>
+    </form>
+
+    {% if results %}
+        <p>{{results|length}} Corpus Description{{results|length|pluralize}} matching your query</p>
+        {% with results as corpus_list %}
+            {% include "repository/list_insertion.html" %}
+        {% endwith %}
+    {% endif %}
+{% endblock content %}

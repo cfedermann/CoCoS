@@ -1,0 +1,131 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Upload Form{% endblock title %}
+
+{% block page-header %}<h1>Upload <small>a new corpus description</small></h1>{% endblock page-header %}
+
+{% block content %}
+    <form action="/upload/" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <p><span class="label notice">Please note</span> The fields <strong>Name, Location</strong> and <strong>Language</strong> are required! </p>
+
+        {% if messages %}
+
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert-message success">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        {% endif %}
+
+        {% for field in form %}
+
+            <div class="clearfix">
+
+                {{ field.label_tag }}
+
+                <div class="input">
+
+                    {% if field.html_name == "location" or field.html_name == "language" %}
+
+                        {% if field.errors %}
+
+                            <div class="clearfix error">
+
+                                {{ field }}
+
+                                {% for error in field.errors %}
+                                    <span class="help-inline">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+                            {{ field }}
+
+                        {% endif %}
+                    {% endif %}
+
+
+                    {% if field.html_name == "annotation" or field.html_name == "sample_file" %}
+                        {{ field }}
+                    {% endif %}
+
+
+                    {% if field.html_name == "name" %}
+
+                        {% if field.errors %}
+
+                            <div class="clearfix error">
+
+                                <input class="span8" id="id_name" type="text" name="name" maxlength="50" />
+
+                                {% for error in field.errors %}
+                                    <span class="help-inline">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+                            <input class="span8" id="id_name" type="text" name="name" maxlength="50" />
+
+                        {% endif %}
+                    {% endif %}
+
+
+                    {% if field.html_name == "coli_path" %}
+                        <input class="span8" id="id_coli_path" type="text" name="coli_path" maxlength="100" />
+                    {% endif %}
+
+
+                    {% if field.html_name == "dfki_path" %}
+                        <input class="span8" id="id_dfki_path" type="text" name="dfki_path" maxlength="100" />
+                    {% endif %}
+
+
+                    {% if field.html_name == "description" %}
+                        <textarea class="span8" id="id_description" rows="10" cols="40" name="description"></textarea>
+                    {% endif %}
+
+
+                    {% if field.html_name == "comment" %}
+                        <textarea class="span8" id="id_comment" rows="10" cols="40" name="comment"></textarea>
+                    {% endif %}
+
+
+                    {% if field.html_name == "license_holder" %}
+                        <input class="span8" id="id_license_holder" type="text" name="license_holder" maxlength="100" />
+                    {% endif %}
+
+
+                    {% if field.html_name == "contact" %}
+
+                        {% if field.errors  %}
+
+                            <div class="clearfix error">
+
+                                <input class="span8" id="id_contact" type="text" name="contact" maxlength="75" />
+
+                                {% for error in field.errors %}
+                                    <span class="help-inline">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+                            <input class="span8" id="id_contact" type="text" name="contact" maxlength="75" />
+
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Submit">
+            <input type="reset" class="btn" value="Reset Changes">
+        </div>
+    </form>
+{% endblock content %}

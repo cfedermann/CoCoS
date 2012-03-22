@@ -1,0 +1,21 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Corpus List{% endblock title %}
+
+{% block page-header %}<h1>Browse <small>corpus descriptions</small></h1>{% endblock page-header %}
+
+{% block content %}
+    <ul class="tabs">
+        <li class="active"><a href="#">All Corpora</a></li>
+        <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+        <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+    </ul>
+
+    {% include "repository/list_insertion.html" %}
+
+    <div class="pagination">
+        <ul>
+            {% include "repository/pagination.html" %}
+        </ul>
+    </div>
+{% endblock content %}

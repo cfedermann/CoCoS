@@ -1,0 +1,77 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Feedback Form{% endblock title %}
+
+{% block page-header %}<h1>Feedback <small>opinions, suggestions, criticisms</small></h1>{% endblock page-header %}
+
+{% block content %}
+    <form action="/feedback/" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <p><span class="label notice">Please note</span> All fields are required!</p>
+
+
+        {% if messages %}
+
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert-message success">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        {% endif %}
+
+        {% for field in form %}
+
+            <div class="clearfix">
+
+                {{ field.label_tag }}
+
+                {% if field.html_name == "subject" %}
+                    {% if field.errors %}
+
+                        <div class="clearfix error">
+
+                            <input class="span8" id="id_subject" type="text" name="subject" maxlength="100" />
+
+                            {% for error in field.errors %}
+                                <span class="help-inline">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+                        <input class="span8" id="id_subject" type="text" name="subject" maxlength="100" />
+
+                    {% endif %}
+                {% endif %}
+
+                {% if field.html_name == "message" %}
+                    {% if field.errors %}
+
+                        <div class="clearfix error">
+
+                            <textarea class="span8" id="id_message" rows="10" cols="40" name="message"></textarea>
+
+                            {% for error in field.errors %}
+                                <span class="help-inline">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+                        <textarea class="span8" id="id_message" rows="10" cols="40" name="message"></textarea>
+
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Submit">
+            <input type="reset" class="btn" value="Reset Changes">
+        </div>
+    </form>
+{% endblock content %}

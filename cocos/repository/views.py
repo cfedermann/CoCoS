@@ -34,12 +34,12 @@ class CorpusListView(ListView):
     model = CorpusDescription
     context_object_name = 'corpus_list'
     paginate_by = ITEMS_PER_PAGE
-    template_name = 'repository/list.html'
+    template_name = 'repository/base_list.html'
 
 
 class CorpusByLocationView(CorpusListView):
     """Return a generic view for listing corpora according to their location"""
-    template_name = 'repository/list_by_location.html'
+    template_name = 'repository/base_list-by-location.html'
 
     def get_queryset(self):
         """Return a queryset that is filtered by the corpus location."""
@@ -57,12 +57,12 @@ class CorpusDetailView(DetailView):
     """Return a generic view for rendering the corpus details."""
     model = CorpusDescription
     context_object_name = 'corpus'
-    template_name = 'repository/details.html'
+    template_name = 'repository/base_details.html'
 
 
 class MainPageView(TemplateView):
     """Return a frontpage that links to browse and upload subpages."""
-    template_name = 'repository/frontpage.html'
+    template_name = 'repository/base_frontpage.html'
 
 
 def search(request):
@@ -92,7 +92,7 @@ def search(request):
 
     dictionary = {'form':form, 'results':results}
 
-    return render(request, 'repository/search.html', dictionary)
+    return render(request, 'repository/base_search.html', dictionary)
 
 
 def advanced_search(request):
@@ -135,7 +135,7 @@ def advanced_search(request):
 
     dictionary = {'form':form, 'results':results}
 
-    return render(request, 'repository/search_advanced.html', dictionary)
+    return render(request, 'repository/base_search-advanced.html', dictionary)
 
 
 def log_user_in(request):
@@ -165,15 +165,14 @@ def log_user_in(request):
 
     dictionary = {'form': form, 'error': error_message}
 
-    return render(request, 'repository/login.html', dictionary)
+    return render(request, 'repository/base_login.html', dictionary)
 
 
 def log_user_out(request):
     """Log a currently logged in user out."""
     logger.info('User "{}" has logged out.'.format(request.user))
     logout(request)
-    return render_to_response('repository/frontpage.html',
-      context_instance=RequestContext(request))
+    return render(request, 'repository/base_frontpage.html')
 
 
 @login_required(login_url='/accounts/login')
@@ -204,7 +203,7 @@ def upload(request):
 
     dictionary = {'form': form}
 
-    return render(request, 'repository/upload.html', dictionary)
+    return render(request, 'repository/base_upload.html', dictionary)
 
 
 @login_required(login_url='/accounts/login')
@@ -238,4 +237,4 @@ def feedback(request):
 
     dictionary = {'form': form}
 
-    return render(request, 'repository/feedback.html', dictionary)
+    return render(request, 'repository/base_feedback.html', dictionary)
