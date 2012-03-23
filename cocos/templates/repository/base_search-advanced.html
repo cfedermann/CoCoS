@@ -4,22 +4,34 @@
 
 {% block page-header %}<h1>Search <small>for corpus descriptions</small></h1>{% endblock page-header %}
 
+{% block search %}<li class="active">{% endblock search %}
+
 {% block content %}
-    <form action="/advanced/" class="form-stacked" method="post" accept-charset="UTF-8">
+    <div class="row">
+    <div class="span6">
+    <form action="/advanced/" class="form-horizontal" method="post" accept-charset="UTF-8">
         {% csrf_token %}
+
+        <fieldset>
+
         {% for field in form %}
-            <div class="clearfix">
-                {{ field.label_tag }}
-                {{ field }}
+            <div class="control-group">
+                <label class="control-label" for="{{ field.label }}">{{ field.label }}</label>
+                <div class="controls">
+                    <input class="input-xxlarge" id="{{ field.label }}" type="text" name="{{ field.html_name }}" maxlength="200">
+                </div>
             </div>
         {% endfor %}
 
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Search Catalogue">
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Search Catalogue">
             <input type="button" class="btn" value="Simple Search" onclick="javascript:window.location.href='/search/';">
             <input type="reset" class="btn" value="Reset Changes">
         </div>
+        </fieldset>
     </form>
+    </div>
+    </div>
 
     {% if results %}
         <p>{{results|length}} Corpus Description{{results|length|pluralize}} matching your query</p>

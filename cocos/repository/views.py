@@ -33,7 +33,7 @@ class CorpusListView(ListView):
     """Return a generic view for listing the corpora in the database."""
     model = CorpusDescription
     context_object_name = 'corpus_list'
-    paginate_by = ITEMS_PER_PAGE
+    #paginate_by = ITEMS_PER_PAGE
     template_name = 'repository/base_list.html'
 
 
@@ -97,6 +97,7 @@ def search(request):
 
 def advanced_search(request):
     """Render the advanced search view."""
+    results = None
     if request.method == 'POST':
         form = AdvancedSearch(request.POST)
 
@@ -182,12 +183,12 @@ def upload(request):
         form = CorpusDescriptionForm(request.POST, request.FILES)
         if form.is_valid():
             new_corpus = form.save(commit=False)
-            new_corpus.uploader = request.user
+            new_corpus.contributor = request.user
             new_corpus.save()
 
             logger.info(
               'New corpus description uploaded by user "{}". Title: "{}".'
-              .format(new_corpus.uploader, new_corpus.name.encode('utf-8')))
+              .format(new_corpus.contributor, new_corpus.name.encode('utf-8')))
 
             messages.success(request,
               'Corpus description uploaded successfully!')

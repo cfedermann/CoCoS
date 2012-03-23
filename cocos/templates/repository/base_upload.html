@@ -4,128 +4,105 @@
 
 {% block page-header %}<h1>Upload <small>a new corpus description</small></h1>{% endblock page-header %}
 
-{% block content %}
-    <form action="/upload/" class="form-stacked" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-        {% csrf_token %}
+{% block upload %}<li class="active">{% endblock upload %}
 
-        <p><span class="label notice">Please note</span> The fields <strong>Name, Location</strong> and <strong>Language</strong> are required! </p>
+{% block content %}
+    <div class="row">
+    <div class="span6">
+    <form action="/upload/" class="form-horizontal" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {% csrf_token %}
 
         {% if messages %}
 
             {% for message in messages %}
                 {% if message.tags == 'success' %}
-                    <div class="alert-message success">
-                        <p>{{ message }}</p>
+                    <div class="alert alert-success">
+                        {{ message }}
                     </div>
                 {% endif %}
             {% endfor %}
 
         {% endif %}
 
+        <fieldset>
+
         {% for field in form %}
 
-            <div class="clearfix">
+            {% if field.errors %}
+                <div class="control-group error">
+            {% else %}
+                <div class="control-group">
+            {% endif %}
 
-                {{ field.label_tag }}
+                    {% if field.html_name == "name" or field.html_name == "location" or field.html_name == "language" %}
+                        <label class="control-label" for="{{ field.label }}">{{ field.label }} (<strong>required</strong>)</label>
+                    {% else %}
+                        <label class="control-label" for="{{ field.label }}">{{ field.label }}</label>
+                    {% endif %}
 
-                <div class="input">
 
-                    {% if field.html_name == "location" or field.html_name == "language" %}
+                    <div class="controls">
 
-                        {% if field.errors %}
-
-                            <div class="clearfix error">
-
-                                {{ field }}
-
-                                {% for error in field.errors %}
-                                    <span class="help-inline">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-
-                        {% else %}
+                        {% if field.html_name == "location" or field.html_name == "language" or field.html_name == "annotation" or field.html_name == "sample_file" %}
                             {{ field }}
-
                         {% endif %}
-                    {% endif %}
+
+                        {% if field.html_name == "name" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="name" maxlength="50" />
+                        {% endif %}
 
 
-                    {% if field.html_name == "annotation" or field.html_name == "sample_file" %}
-                        {{ field }}
-                    {% endif %}
+                        {% if field.html_name == "coli_path" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="coli_path" maxlength="100" />
+                        {% endif %}
 
 
-                    {% if field.html_name == "name" %}
+                        {% if field.html_name == "dfki_path" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="dfki_path" maxlength="100" />
+                        {% endif %}
 
-                        {% if field.errors %}
 
-                            <div class="clearfix error">
+                        {% if field.html_name == "description" %}
+                            <textarea class="input-xxlarge" id="{{ field.label }}" rows="10" cols="40" name="description"></textarea>
+                        {% endif %}
 
-                                <input class="span8" id="id_name" type="text" name="name" maxlength="50" />
+
+                        {% if field.html_name == "comment" %}
+                            <textarea class="input-xxlarge" id="{{ field.label }}" rows="10" cols="40" name="comment"></textarea>
+                        {% endif %}
+
+
+                        {% if field.html_name == "license_holder" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="license_holder" maxlength="100" />
+                        {% endif %}
+
+
+                        {% if field.html_name == "contact" %}
+
+                            {% if field.errors  %}
+
+                                <input class="input-xxlarge" id="{{ field.label }}" type="text" name="contact" maxlength="75" />
 
                                 {% for error in field.errors %}
                                     <span class="help-inline">{{ error }}</span>
                                 {% endfor %}
-                            </div>
 
-                        {% else %}
-                            <input class="span8" id="id_name" type="text" name="name" maxlength="50" />
+                            {% else %}
+                                <input class="input-xxlarge" id="{{ field.label }}" type="text" name="contact" maxlength="75" />
 
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
 
-
-                    {% if field.html_name == "coli_path" %}
-                        <input class="span8" id="id_coli_path" type="text" name="coli_path" maxlength="100" />
-                    {% endif %}
-
-
-                    {% if field.html_name == "dfki_path" %}
-                        <input class="span8" id="id_dfki_path" type="text" name="dfki_path" maxlength="100" />
-                    {% endif %}
-
-
-                    {% if field.html_name == "description" %}
-                        <textarea class="span8" id="id_description" rows="10" cols="40" name="description"></textarea>
-                    {% endif %}
-
-
-                    {% if field.html_name == "comment" %}
-                        <textarea class="span8" id="id_comment" rows="10" cols="40" name="comment"></textarea>
-                    {% endif %}
-
-
-                    {% if field.html_name == "license_holder" %}
-                        <input class="span8" id="id_license_holder" type="text" name="license_holder" maxlength="100" />
-                    {% endif %}
-
-
-                    {% if field.html_name == "contact" %}
-
-                        {% if field.errors  %}
-
-                            <div class="clearfix error">
-
-                                <input class="span8" id="id_contact" type="text" name="contact" maxlength="75" />
-
-                                {% for error in field.errors %}
-                                    <span class="help-inline">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-
-                        {% else %}
-                            <input class="span8" id="id_contact" type="text" name="contact" maxlength="75" />
-
-                        {% endif %}
-                    {% endif %}
-
+                    </div>
                 </div>
-            </div>
         {% endfor %}
 
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Submit">
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Submit">
             <input type="reset" class="btn" value="Reset Changes">
         </div>
+        </fieldset>
     </form>
+    </div>
+    </div>
 {% endblock content %}

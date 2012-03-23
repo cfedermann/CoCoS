@@ -2,33 +2,36 @@
 <html lang="en">
 <head>
     <title>{% block title %}Corpora Collection System (CoCoS){% endblock title %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-2.0.2.css">
+    {% comment %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-1.3.0.min.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/overrides.css">
+    {% endcomment %}
 </head>
 <body>
     {% block topbar %}
 
-    <div class="topbar">
-        <div class="fill">
+    <div class="navbar">
+        <div class="navbar-inner">
             <div class="container">
-                <h3><a href="{% url cocos-frontpage %}">CoCoS</a></h3>
+                <h3><a class="brand" href="{% url cocos-frontpage %}">CoCoS</a></h3>
                 <ul class="nav">
-                    <li><a href="{% url corpus-list page=1 %}">Browse</a></li>
-                    <li><a href="{% url search %}">Search</a></li>
+                    {% block browse %}<li>{% endblock browse %}<a href="{% url corpus-list page=1 %}">Browse</a></li>
+                    {% block search %}<li>{% endblock search %}<a href="{% url search %}">Search</a></li>
 
                     {% if not user.is_authenticated %}
-                        <li><a href="{% url login-form %}">Login</a></li>
+                        {% block login %}<li>{% endblock login %}<a href="{% url login-form %}">Login</a></li>
                     {% else %}
-                        <li><a href="{% url upload-form %}">Upload</a></li>
-                        <li><a href="{% url feedback-form %}">Feedback</a></li>
-                        <li><a href="{% url logout %}">Logout</a></li>
+                        {% block upload %}<li>{% endblock upload %}<a href="{% url upload-form %}">Upload</a></li>
+                        {% block feedback %}<li>{% endblock feedback %}<a href="{% url feedback-form %}">Feedback</a></li>
+                        {% block logout %}<li>{% endblock logout %}<a href="{% url logout %}">Logout</a></li>
                     {% endif %}
 
                 </ul>
 
                 {% if user.is_authenticated %}
-                    <ul class="nav secondary-nav">
-                        <li><p>Welcome, {{ user.first_name }} {{ user.last_name }}</p></li>
+                    <ul class="nav pull-right">
+                        <li class="active"><a>Welcome, {{ user.first_name }} {{ user.last_name }}</a></li>
                     </ul>
                 {% endif %}
 
@@ -39,14 +42,17 @@
     {% endblock topbar %}
 
     <div class="container">
-        <div class="content">
-            <div class="page-header">
-                {% block page-header %}{% endblock page-header %}
+        <div class="row">
+            <div class="span12">
+                <div class="page-header">
+                    {% block page-header %}{% endblock page-header %}
+                </div>
+
+                {% block content %}{% endblock content %}
+
             </div>
-
-            {% block content %}{% endblock content %}
-
         </div>
+
     </div>
 
 

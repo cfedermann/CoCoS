@@ -4,14 +4,18 @@
 
 {% block page-header %}<h1>Details <small>{{ corpus.name }}</small></h1>{% endblock page-header %}
 
-{% block content %}
-    <ul class="tabs">
-        <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
-        <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
-        <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
-    </ul>
+{% block browse %}<li class="active">{% endblock browse %}
 
-    <table class="zebra-striped">
+{% block content %}
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+            <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+            <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+        </ul>
+    </div>
+
+    <table class="table table-striped table-bordered">
 
         <tbody>
         <tr>

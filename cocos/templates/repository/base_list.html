@@ -4,18 +4,24 @@
 
 {% block page-header %}<h1>Browse <small>corpus descriptions</small></h1>{% endblock page-header %}
 
+{% block browse %}<li class="active">{% endblock browse %}
+
 {% block content %}
-    <ul class="tabs">
-        <li class="active"><a href="#">All Corpora</a></li>
-        <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
-        <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
-    </ul>
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">All Corpora</a></li>
+            <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+            <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+        </ul>
+    </div>
 
     {% include "repository/list_insertion.html" %}
 
-    <div class="pagination">
+    {% comment %}
+    <div class="pagination pagination-centered">
         <ul>
             {% include "repository/pagination.html" %}
         </ul>
     </div>
+    {% endcomment %}
 {% endblock content %}

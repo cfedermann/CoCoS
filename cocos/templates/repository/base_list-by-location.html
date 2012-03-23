@@ -4,30 +4,38 @@
 
 {% block page-header %}<h1>Browse <small>corpus descriptions</small></h1>{% endblock page-header %}
 
+{% block browse %}<li class="active">{% endblock browse %}
+
 {% block content %}
     {% if location == "coli" %}
-        <ul class="tabs">
-            <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
-            <li class="active"><a href="#">CoLi</a></li>
-            <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
-        </ul>
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                <li class="active"><a href="#">CoLi</a></li>
+                <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+            </ul>
+        </div>
 
     {% endif %}
 
     {% if location == "dfki" %}
-        <ul class="tabs">
-            <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
-            <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
-            <li class="active"><a href="#">DFKI</a></li>
-        </ul>
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+                <li class="active"><a href="#">DFKI</a></li>
+            </ul>
+        </div>
     {% endif %}
 
 
     {% include "repository/list_insertion.html" %}
 
-    <div class="pagination">
+    {% comment %}
+    <div class="pagination pagination-centered">
         <ul>
             {% include "repository/pagination.html" %}
         </ul>
     </div>
+    {% endcomment %}
 {% endblock content %}

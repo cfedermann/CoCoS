@@ -19,7 +19,10 @@ class CorpusDescriptionForm(forms.ModelForm):
         A meta class for specifying which model this ModelForm is built upon.
         """
         model = CorpusDescription
-        exclude = ('contributor',)
+        fields = ('name', 'location', 'language', 'annotation', 'coli_path',
+          'dfki_path', 'license_holder', 'contact', 'description', 'comment',
+          'sample_file')
+        #exclude = ('contributor',)
 
 
 class FeedbackMessageForm(forms.ModelForm):
