@@ -4,7 +4,7 @@
 
 {% block page-header %}<h1>Search <small>for corpus descriptions</small></h1>{% endblock page-header %}
 
-{% block search %}<li class="active">{% endblock search %}
+{% block search %}<li class="dropdown active">{% endblock search %}
 
 {% block content %}
     <div class="row">
@@ -24,8 +24,7 @@
         {% endfor %}
 
         <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="Search Catalogue">
-            <input type="button" class="btn" value="Advanced Search" onclick="javascript:window.location.href='/advanced/';">
+            <button type="submit" class="btn btn-primary"><i class="icon-book icon-white"></i> Search Catalogue</button>
         </div>
         </fieldset>
     </form>

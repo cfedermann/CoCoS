@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.template import RequestContext
 from django.views.generic import ListView, DetailView, TemplateView
 
 from repository.forms import SimpleSearch, AdvancedSearch, \
@@ -67,6 +66,7 @@ class MainPageView(TemplateView):
 
 def search(request):
     """Render the simple search view."""
+    results = None
     if request.method == 'POST':
         form = SimpleSearch(request.POST)
 
@@ -88,7 +88,6 @@ def search(request):
                                 results.append(corpus_description)
     else:
         form = SimpleSearch()
-        results = None
 
     dictionary = {'form':form, 'results':results}
 
@@ -132,7 +131,6 @@ def advanced_search(request):
 
     else:
         form = AdvancedSearch()
-        results = None
 
     dictionary = {'form':form, 'results':results}
 
