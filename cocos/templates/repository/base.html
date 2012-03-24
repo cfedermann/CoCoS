@@ -9,9 +9,11 @@
     {% endcomment %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.dropdown-toggle').dropdown();
+            $('.alert').alert();
         });
     </script>
 </head>

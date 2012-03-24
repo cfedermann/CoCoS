@@ -189,7 +189,8 @@ def upload(request):
               .format(new_corpus.contributor, new_corpus.name.encode('utf-8')))
 
             messages.success(request,
-              'Corpus description uploaded successfully!')
+              'Corpus description uploaded successfully! '
+              'Just enter more if you want.')
         else:
             logger.warning(
               'User "{}" tried to upload a new corpus description but failed.'
@@ -229,7 +230,7 @@ def feedback(request):
               .format(request.user))
 
             messages.error(request,
-              'Feedback submission has failed! ' \
+              'Feedback submission has failed! '
               'Please fill in all required slots.')
     else:
         form = FeedbackMessageForm
