@@ -42,7 +42,7 @@ class CorpusDescription(models.Model):
 
     # Mandatory fields
     name = models.CharField(max_length=50,
-      help_text="The name of the corpus, e.g. <i>American National Corpus</i>.")
+      help_text="The name of the corpus, e.g. 'American National Corpus'.")
     location = models.CharField(choices=LOCATIONS, max_length=4,
       help_text="Which server(s) is the corpus located on?")
     coli_path = models.CharField(blank=True, max_length=100,
@@ -57,7 +57,7 @@ class CorpusDescription(models.Model):
 
     # Optional fields
     description = models.TextField(blank=True,
-      help_text="A short description of the corpus' content")
+      help_text="Provide a short description of the corpus' content")
     comment = models.TextField(blank=True,
       help_text="Some further comments or remarks")
     license_holder = models.CharField(blank=True, max_length=100,

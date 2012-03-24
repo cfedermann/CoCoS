@@ -54,35 +54,42 @@
 
                         {% if field.html_name == "location" or field.html_name == "language" or field.html_name == "annotation" or field.html_name == "sample_file" %}
                             {{ field }}
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
                         {% if field.html_name == "name" %}
                             <input class="input-xxlarge" id="{{ field.label }}" type="text" name="name" maxlength="50" />
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
 
                         {% if field.html_name == "coli_path" %}
                             <input class="input-xxlarge" id="{{ field.label }}" type="text" name="coli_path" maxlength="100" />
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
 
                         {% if field.html_name == "dfki_path" %}
                             <input class="input-xxlarge" id="{{ field.label }}" type="text" name="dfki_path" maxlength="100" />
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
 
                         {% if field.html_name == "description" %}
                             <textarea class="input-xxlarge" id="{{ field.label }}" rows="10" cols="40" name="description"></textarea>
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
 
                         {% if field.html_name == "comment" %}
                             <textarea class="input-xxlarge" id="{{ field.label }}" rows="10" cols="40" name="comment"></textarea>
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
 
                         {% if field.html_name == "license_holder" %}
                             <input class="input-xxlarge" id="{{ field.label }}" type="text" name="license_holder" maxlength="100" />
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
 
@@ -100,6 +107,7 @@
                                 <input class="input-xxlarge" id="{{ field.label }}" type="text" name="contact" maxlength="75" />
 
                             {% endif %}
+                            <p class="help-block">{{ field.help_text }}</p>
                         {% endif %}
 
                     </div>
