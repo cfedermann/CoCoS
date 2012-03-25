@@ -4,6 +4,7 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
          Peter Stahl <pstahl@coli.uni-saarland.de>
 """
 
+from datetime import datetime
 import os
 import settings
 import sys
@@ -16,24 +17,26 @@ from repository.models import CorpusDescription, FeedbackMessage
 
 def usage():
     """Prints usage instructions to screen."""
-    print "\nUsage: python export_data.py <filename.{xml|json}>\n"
+    print "\nUsage: python export_data.py {xml|json}\n"
 
 
-def export_data(filename):
+def export_data(filetype):
     """
     Export the data currently being in the database
     and save it in folder 'exported_data'.
     """
-    if filename.endswith("xml"):
+    if filetype == "xml":
         serializer = serializers.get_serializer("xml")
-    elif filename.endswith("json"):
+    elif filetype == "json":
         serializer = serializers.get_serializer("json")
     else:
-        raise RuntimeError("File name must be of extension 'xml' or 'json'!")
+        raise RuntimeError("Extension must be either 'xml' or 'json'!")
 
     if not os.path.isdir("exported_data"):
         os.mkdir("exported_data")
-    output = open("exported_data/" + filename, "w")
+
+    dump_file = "cocos_dump_" + str(datetime.today()).replace(" ", "_") + "." + filetype
+    output = open("exported_data/" + dump_file, "w")
 
     new_serializer = serializer()
     all_objects = list(CorpusDescription.objects.all()) + \
@@ -41,7 +44,7 @@ def export_data(filename):
     new_serializer.serialize(all_objects, stream=output)
     output.close()
 
-    print "\tModel data successfully written to", filename
+    print "\tModel data successfully written to", dump_file
 
 
 if __name__ == "__main__":
