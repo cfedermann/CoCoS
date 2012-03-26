@@ -50,14 +50,14 @@
         {% if corpus.description %}
             <tr>
                 <td>Description:</td>
-                <td>{{ corpus.description }}</td>
+                <td>{{ corpus.description|linebreaksbr }}</td>
             </tr>
         {% endif %}
 
         {% if corpus.comment %}
             <tr>
                 <td>Comment:</td>
-                <td>{{ corpus.comment }}</td>
+                <td>{{ corpus.comment|linebreaksbr }}</td>
             </tr>
         {% endif %}
 
