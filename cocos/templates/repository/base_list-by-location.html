@@ -28,14 +28,33 @@
         </div>
     {% endif %}
 
-
-    {% include "repository/list_insertion.html" %}
+    <div class="accordion" id="accordion2">
+        {% for corpus in corpus_list %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ corpus.id }}">
+                        {{ corpus.name }}
+                    </a>
+                </div>
+                <div id="{{ corpus.id }}" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        <p><strong>Language:</strong> {{ corpus.get_language_display }}</p>
+                        <p><strong>Annotation:</strong> {{ corpus.annotation|yesno:"Yes, No, Maybe" }}</p>
+                        <p><a href="{% url corpus-details corpus.id %}">Detailed Information</a></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
     {% comment %}
+    {% include "repository/list_insertion.html" %}
+    {% endcomment %}
+
     <div class="pagination pagination-centered">
         <ul>
             {% include "repository/pagination.html" %}
         </ul>
     </div>
-    {% endcomment %}
+
 {% endblock content %}

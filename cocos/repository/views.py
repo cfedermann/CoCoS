@@ -32,7 +32,7 @@ class CorpusListView(ListView):
     """Return a generic view for listing the corpora in the database."""
     model = CorpusDescription
     context_object_name = 'corpus_list'
-    #paginate_by = ITEMS_PER_PAGE
+    paginate_by = ITEMS_PER_PAGE
     template_name = 'repository/base_list.html'
 
 
