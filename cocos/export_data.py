@@ -8,15 +8,7 @@ import os
 import sys
 
 from datetime import datetime
-from django.core import serializers
 from django.core.management import setup_environ
-
-# pylint: disable-msg=W0403
-import settings
-
-from repository.models import CorpusDescription, FeedbackMessage
-
-setup_environ(settings)
 
 def usage():
     """Prints usage instructions to screen."""
@@ -28,6 +20,8 @@ def export_data(filetype):
     Export the data currently being in the database
     and save it in folder 'exported_data'.
     """
+    from django.core import serializers
+    
     if filetype == "xml":
         serializer = serializers.get_serializer("xml")
     elif filetype == "json":
@@ -54,5 +48,18 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         usage()
         sys.exit(-1)
-
+    
+    # Properly set DJANGO_SETTINGS_MODULE environment variable.
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+    PROJECT_HOME = os.path.normpath(os.getcwd() + "/..")
+    sys.path.append(PROJECT_HOME)
+    
+    # We have just added cocos to the system path list, hence this works.
+    from cocos import settings
+    from cocos.repository.models import CorpusDescription, FeedbackMessage
+    
+    # Setup Django environment using settings module.
+    setup_environ(settings)
+    
+    # Export data using export_data() method.
     export_data(sys.argv[1])
