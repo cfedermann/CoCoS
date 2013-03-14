@@ -6,11 +6,13 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 
 from django import forms
 
-from models import CorpusDescription, FeedbackMessage, LOCATIONS, LANGUAGES
+from cocos.repository.models import CorpusDescription, FeedbackMessage, \
+  LOCATIONS, LANGUAGES
 
 LOCATIONS_AND_EMPTY = [('', '---------')] + LOCATIONS
 LANGUAGES_AND_EMPTY = [('', '---------')] + LANGUAGES
 
+# pylint: disable-msg=R0924
 class CorpusDescriptionForm(forms.ModelForm):
     """A ModelForm for the corpus description model."""
     
@@ -25,18 +27,21 @@ class CorpusDescriptionForm(forms.ModelForm):
         #exclude = ('contributor',)
 
 
+# pylint: disable-msg=R0924
 class FeedbackMessageForm(forms.ModelForm):
 
     class Meta:
         model = FeedbackMessage
         exclude = ('user', 'status')
 
-        
+
+# pylint: disable-msg=R0924
 class SimpleSearch(forms.Form):
     """Render a single text input."""
     keywords = forms.CharField(max_length=200, required=False)
-    
 
+
+# pylint: disable-msg=R0924
 class AdvancedSearch(forms.Form):
     """Render a complex search form for different model fields."""
     name = forms.CharField(max_length=200, required=False, label="Name")
