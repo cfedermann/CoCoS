@@ -14,10 +14,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 
-from repository.forms import SimpleSearch, AdvancedSearch, \
+from cocos.repository.forms import SimpleSearch, AdvancedSearch, \
     CorpusDescriptionForm, FeedbackMessageForm
-from repository.models import CorpusDescription
-from settings import ITEMS_PER_PAGE
+from cocos.repository.models import CorpusDescription
+from cocos.settings import ITEMS_PER_PAGE
 
 logger = logging.getLogger('cocos')
 
@@ -36,6 +36,7 @@ class CorpusListView(ListView):
     template_name = 'repository/base_list.html'
 
 
+# pylint: disable-msg=R0901
 class CorpusByLocationView(CorpusListView):
     """Return a generic view for listing corpora according to their location"""
     template_name = 'repository/base_list-by-location.html'
