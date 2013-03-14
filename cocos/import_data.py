@@ -7,13 +7,7 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 import os
 import sys
 
-from django.core import serializers
 from django.core.management import setup_environ
-
-# pylint: disable-msg=W0403
-import settings
-
-setup_environ(settings)
 
 def usage():
     """Prints usage instructions to screen."""
@@ -22,7 +16,8 @@ def usage():
 
 def import_data(filename):
     """Import the current dump back into the database."""
-
+    from django.core import serializers
+    
     if os.path.isfile(os.getcwd() + "/exported_data/" + filename):
         if filename.endswith("xml"):
             data = open("exported_data/" + filename, "r")
@@ -49,5 +44,17 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         usage()
         sys.exit(-1)
-
+    
+    # Properly set DJANGO_SETTINGS_MODULE environment variable.
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+    PROJECT_HOME = os.path.normpath(os.getcwd() + "/..")
+    sys.path.append(PROJECT_HOME)
+    
+    # We have just added cocos to the system path list, hence this works.
+    from cocos import settings
+    
+    # Setup Django environment using settings module.
+    setup_environ(settings)
+    
+    # Import data using import_data() method.
     import_data(sys.argv[1])
