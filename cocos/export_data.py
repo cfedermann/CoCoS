@@ -4,16 +4,19 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
          Peter Stahl <pstahl@coli.uni-saarland.de>
 """
 
-from datetime import datetime
 import os
-import settings
 import sys
 
+from datetime import datetime
 from django.core import serializers
 from django.core.management import setup_environ
-setup_environ(settings)
+
+# pylint: disable-msg=W0403
+import settings
 
 from repository.models import CorpusDescription, FeedbackMessage
+
+setup_environ(settings)
 
 def usage():
     """Prints usage instructions to screen."""
