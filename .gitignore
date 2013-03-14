@@ -12,3 +12,4 @@ Thumbs.db
 *.json
 *.sh
 exported_data/*
+cocos.log
