@@ -1,0 +1,40 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Search{% endblock title %}
+
+{% block page-header %}<h1>Search <small>for corpus descriptions</small></h1>{% endblock page-header %}
+
+{% block search %}<li class="dropdown active">{% endblock search %}
+
+{% block content %}
+    <div class="row">
+    <div class="span9">
+    <form action="/search/" class="form-horizontal" method="post" accept-charset="UTF-8">
+        {% csrf_token %}
+
+        <fieldset>
+
+        {% for field in form %}
+            <div class="control-group">
+                <label class="control-label" for="{{ field.label }}">{{ field.label }}</label>
+                <div class="controls">
+                    <input class="input-xxlarge" id="{{ field.label }}" type="text" name="{{ field.html_name }}" maxlength="200">
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-book icon-white"></i> Search Catalogue</button>
+        </div>
+        </fieldset>
+    </form>
+    </div>
+    </div>
+
+    {% if results %}
+        <p>{{results|length}} corpus description{{results|length|pluralize}} matching your query</p>
+        {% with results as corpus_list %}
+            {% include "repository/list_insertion.html" %}
+        {% endwith %}
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Corpora Collection System (CoCoS){% endblock title %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-2.0.2.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.dropdown-toggle').dropdown();
+            $('.alert').alert();
+            $('.collapse').collapse({
+                parent: true
+            });
+        });
+    </script>
+</head>
+<body>
+    {% block topbar %}
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <h3><a class="brand" href="{% url cocos-frontpage %}">CoCoS</a></h3>
+                <ul class="nav">
+                    {% block browse %}<li>{% endblock browse %}<a href="{% url corpus-list page=1 %}"><i class="icon-list-alt icon-white"></i> Browse</a></li>
+                    {% block search %}<li class="dropdown">{% endblock search %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-search icon-white"></i> Search <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="window.location.href='/search/';">Simple Search</a></li>
+                            <li><a href="#" onclick="window.location.href='/advanced/';">Advanced Search</a></li>
+                        </ul>
+                    </li>
+                
+                    {% if not user.is_authenticated %}
+                        {% block login %}<li>{% endblock login %}<a href="{% url login-form %}"><i class="icon-user icon-white"></i> Login</a></li>
+                    {% else %}
+                        {% block upload %}<li>{% endblock upload %}<a href="{% url upload-form %}"><i class="icon-upload icon-white"></i> Upload</a></li>
+                        {% block feedback %}<li>{% endblock feedback %}<a href="{% url feedback-form %}"><i class="icon-comment icon-white"></i> Feedback</a></li>
+                        {% block logout %}<li>{% endblock logout %}<a href="{% url logout %}"><i class="icon-remove-circle icon-white"></i> Logout</a></li>
+                    {% endif %}
+
+                </ul>
+
+                {% if user.is_authenticated %}
+                    <ul class="nav pull-right">
+                        <li class="active"><a><i class="icon-user icon-white"></i> Welcome, {{ user.first_name }} {{ user.last_name }}</a></li>
+                    </ul>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    {% endblock topbar %}
+
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="page-header">
+                    {% block page-header %}{% endblock page-header %}
+                </div>
+
+                {% block content %}{% endblock content %}
+
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+</html>

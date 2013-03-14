@@ -1,0 +1,67 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Login Form{% endblock title %}
+
+{% block page-header %}<h1>Please log in</h1>{% endblock page-header %}
+
+{% block login %}<li class="active">{% endblock login %}
+
+{% block content %}
+    <div class="row">
+    <div class="span9">
+    <form action="{% url login-form %}" class="form-horizontal" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if error == "not_active" %}
+            <div class="alert alert-error fade in">
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                Your account has been disabled. Please contact the administrator.
+            </div>
+
+        {% else %}
+
+            {% if error == "not_authenticated" %}
+                <div class="alert alert-error fade in">
+                    <a class="close" data-dismiss="alert" href="#">&times;</a>
+                    Your username and password didn't match. Please try again.
+                </div>
+            {% endif %}
+
+        {% endif %}
+
+        <fieldset>
+
+        {% if error == "not_authenticated" %}
+        <div class="control-group error">
+        {% else %}
+        <div class="control-group">
+        {% endif %}
+            <label class="control-label" for="{{ form.username.label }}">{{ form.username.label }} (<strong>required</strong>)</label>
+            <div class="controls">
+                <input class="input-xxlarge" id="{{ form.username.label }}" type="text" name="{{ form.username.html_name }}" maxlength="100" />
+            </div>
+        </div>
+
+        {% if error == "not_authenticated" %}
+            <div class="control-group error">
+        {% else %}
+            <div class="control-group">
+        {% endif %}
+            <label class="control-label" for="{{ form.password.label }}">{{ form.password.label }} (<strong>required</strong>)</label>
+            <div class="controls">
+                <input class="input-xxlarge" id="{{ form.password.label }}" type="text" name="{{ form.password.html_name }}" maxlength="100" />
+            </div>
+        </div>
+
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-user icon-white"></i> Login</button>
+            <input type="hidden" name="next" value="upload/">
+        </div>
+        </fieldset>
+
+    </form>
+    </div>
+    </div>
+
+{% endblock content %}

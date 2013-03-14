@@ -1,0 +1,125 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Upload Form{% endblock title %}
+
+{% block page-header %}<h1>Upload <small>a new corpus description</small></h1>{% endblock page-header %}
+
+{% block upload %}<li class="active">{% endblock upload %}
+
+{% block content %}
+    <div class="row">
+    <div class="span9">
+    <form action="/upload/" class="form-horizontal" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success fade in">
+                        <a class="close" data-dismiss="alert" href="#">&times;</a>
+                        {{ message }}
+                    </div>
+                {% endif %}
+                
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-error fade in">
+                        <a class="close" data-dismiss="alert" href="#">&times;</a>
+                        {{ message }}
+                    </div>
+                {% endif %}
+                
+            {% endfor %}
+
+        {% endif %}
+
+        <fieldset>
+
+        {% for field in form %}
+
+            {% if field.errors %}
+                <div class="control-group error">
+            {% else %}
+                <div class="control-group">
+            {% endif %}
+
+                    {% if field.html_name == "name" or field.html_name == "location" or field.html_name == "language" %}
+                        <label class="control-label" for="{{ field.label }}">{{ field.label }} (<strong>required</strong>)</label>
+                    {% else %}
+                        <label class="control-label" for="{{ field.label }}">{{ field.label }}</label>
+                    {% endif %}
+
+
+                    <div class="controls">
+
+                        {% if field.html_name == "location" or field.html_name == "language" or field.html_name == "annotation" or field.html_name == "sample_file" %}
+                            {{ field }}
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+                        {% if field.html_name == "name" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="name" maxlength="50" />
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+
+                        {% if field.html_name == "coli_path" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="coli_path" maxlength="100" />
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+
+                        {% if field.html_name == "dfki_path" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="dfki_path" maxlength="100" />
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+
+                        {% if field.html_name == "description" %}
+                            <textarea class="input-xxlarge" id="{{ field.label }}" rows="10" cols="40" name="description"></textarea>
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+
+                        {% if field.html_name == "comment" %}
+                            <textarea class="input-xxlarge" id="{{ field.label }}" rows="10" cols="40" name="comment"></textarea>
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+
+                        {% if field.html_name == "license_holder" %}
+                            <input class="input-xxlarge" id="{{ field.label }}" type="text" name="license_holder" maxlength="100" />
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+
+                        {% if field.html_name == "contact" %}
+
+                            {% if field.errors  %}
+
+                                <input class="input-xxlarge" id="{{ field.label }}" type="text" name="contact" maxlength="75" />
+
+                                {% for error in field.errors %}
+                                    <span class="help-inline">{{ error }}</span>
+                                {% endfor %}
+
+                            {% else %}
+                                <input class="input-xxlarge" id="{{ field.label }}" type="text" name="contact" maxlength="75" />
+
+                            {% endif %}
+                            <p class="help-block">{{ field.help_text }}</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i> Submit</button>
+            <button type="reset" class="btn"><i class="icon-remove"></i> Reset form</button>
+        </div>
+        </fieldset>
+    </form>
+    </div>
+    </div>
+{% endblock content %}

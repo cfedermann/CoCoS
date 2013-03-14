@@ -9,20 +9,28 @@ from django.db import models
 
 MODEL_VERSION = 1
 
-LANGUAGES = (
-      ('CN', 'Chinese'),
-      ('DE', 'German'),
-      ('EN', 'English'),
-      ('ES', 'Spanish'),
-      ('FR', 'French'),
-      ('IT', 'Italian'),
-      ('ML', 'Multilingual')
-    )
+LANGUAGES = [
+    ('AR', 'Arabic'),
+    ('CN', 'Chinese'),
+    ('DE', 'German'),
+    ('EN', 'English'),
+    ('ES', 'Spanish'),
+    ('FR', 'French'),
+    ('IT', 'Italian'),
+    ('ML', 'Multilingual'),
+    ('TR', 'Turkish')
+]
 
-LOCATIONS = (
-      ('DFKI', 'DFKI'),
-      ('COLI', 'CoLi'),
-    )
+LOCATIONS = [
+    ('DFKI', 'DFKI'),
+    ('COLI', 'CoLi'),
+]
+
+FEEDBACK_STATUS_OPTIONS = [
+    ('O', 'Open'),
+    ('C', 'Closed'),
+    ('S', 'Spam')
+]
 
 class CorpusDescription(models.Model):
     """The corpus description model.
@@ -34,9 +42,7 @@ class CorpusDescription(models.Model):
 
     # Mandatory fields
     name = models.CharField(max_length=50,
-      help_text="The name of the corpus, e.g. <i>American National Corpus</i>.")
-    #url = models.URLField(help_text="The URL to the corpus website, e.g. \
-    #  <i>http://americannationalcorpus.org/</i>")
+      help_text="The name of the corpus, e.g. 'American National Corpus'.")
     location = models.CharField(choices=LOCATIONS, max_length=4,
       help_text="Which server(s) is the corpus located on?")
     coli_path = models.CharField(blank=True, max_length=100,
@@ -51,28 +57,50 @@ class CorpusDescription(models.Model):
 
     # Optional fields
     description = models.TextField(blank=True,
-      help_text="A short description of the corpus' content")
+      help_text="Provide a short description of the corpus' content")
     comment = models.TextField(blank=True,
       help_text="Some further comments or remarks")
     license_holder = models.CharField(blank=True, max_length=100,
       help_text="Who is the license holder of this corpus?")
     contact = models.EmailField(blank=True,
       help_text="The license holder's email address")
-    file = models.FileField(upload_to="files/%Y/%m/%d", blank=True)
+    sample_file = models.FileField(upload_to="files/%Y/%m/%d", blank=True,
+      help_text="Optional field for uploading example data to illustrate annotations etc.")
 
-    # The user who uploaded the current corpus description
-    uploader = models.ForeignKey(User, related_name='+')
+    contributor = models.ForeignKey(User, related_name='+',
+      help_text="User who has uploaded the current corpus description")
 
-    # Timestamp dates for the admin backend
     date_of_first_creation = models.DateTimeField(auto_now_add=True,
       help_text="Timestamp for adding the corpus to the database",
       verbose_name="date of first creation")
-
     date_of_last_modification = models.DateTimeField(auto_now=True,
-      help_text="Timestamp for the last modification",
+      help_text="Timestamp for last modification",
       verbose_name="date of last modification")
 
-
+    class Meta:
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
+
+
+class FeedbackMessage(models.Model):
+    """The feedback message model.
+
+    This model provides the following fields:
+    Mandatory fields: Subject, Text.
+    """
+
+    user = models.ForeignKey(User, related_name='+',
+      help_text="User who has sent this feedback message")
+    subject = models.CharField(max_length=100,
+      help_text="Topic of this feedback message")
+    message = models.TextField(help_text="The actual feedback message")
+    status = models.CharField(choices=FEEDBACK_STATUS_OPTIONS, max_length=1,
+      help_text="Current status of processing this feedback message")
+    date_of_submission = models.DateTimeField(auto_now_add=True,
+      verbose_name="date of submission",
+      help_text="Timestamp for sending this feedback message")
+
+    def __unicode__(self):
+        return self.subject

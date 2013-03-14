@@ -1,6 +1,5 @@
 *.pyc
 *.db
-
 .DS_Store
 .DS_Store?
 ._*
@@ -9,3 +8,7 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+*.xml
+*.json
+*.sh
+exported_data/*

@@ -4,17 +4,20 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
          Peter Stahl <pstahl@coli.uni-saarland.de>
 """
 
+import logging
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.views.generic import ListView, DetailView, TemplateView, \
-  CreateView
-from repository.forms import SimpleSearch, AdvancedSearch
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView, TemplateView
+
+from repository.forms import SimpleSearch, AdvancedSearch, \
+    CorpusDescriptionForm, FeedbackMessageForm
 from repository.models import CorpusDescription
 from settings import ITEMS_PER_PAGE
-import logging
 
 logger = logging.getLogger('cocos')
 
@@ -30,12 +33,12 @@ class CorpusListView(ListView):
     model = CorpusDescription
     context_object_name = 'corpus_list'
     paginate_by = ITEMS_PER_PAGE
-    template_name = 'repository/list.html'
+    template_name = 'repository/base_list.html'
 
 
 class CorpusByLocationView(CorpusListView):
     """Return a generic view for listing corpora according to their location"""
-    template_name = 'repository/list_by_location.html'
+    template_name = 'repository/base_list-by-location.html'
 
     def get_queryset(self):
         """Return a queryset that is filtered by the corpus location."""
@@ -53,23 +56,17 @@ class CorpusDetailView(DetailView):
     """Return a generic view for rendering the corpus details."""
     model = CorpusDescription
     context_object_name = 'corpus'
-    template_name = 'repository/details.html'
+    template_name = 'repository/base_details.html'
 
 
 class MainPageView(TemplateView):
     """Return a frontpage that links to browse and upload subpages."""
-    template_name = 'repository/frontpage.html'
-
-
-class UploadView(CreateView):
-    """Render a form for submitting new corpus descriptions."""
-    model = CorpusDescription
-    success_url = '/'
-    template_name = 'repository/upload.html'
+    template_name = 'repository/base_frontpage.html'
 
 
 def search(request):
     """Render the simple search view."""
+    results = None
     if request.method == 'POST':
         form = SimpleSearch(request.POST)
 
@@ -91,16 +88,15 @@ def search(request):
                                 results.append(corpus_description)
     else:
         form = SimpleSearch()
-        results = None
 
     dictionary = {'form':form, 'results':results}
 
-    return render_to_response('repository/search.html',
-      dictionary, context_instance=RequestContext(request))
+    return render(request, 'repository/base_search.html', dictionary)
 
 
 def advanced_search(request):
     """Render the advanced search view."""
+    results = None
     if request.method == 'POST':
         form = AdvancedSearch(request.POST)
 
@@ -135,12 +131,10 @@ def advanced_search(request):
 
     else:
         form = AdvancedSearch()
-        results = None
 
     dictionary = {'form':form, 'results':results}
 
-    return render_to_response('repository/search_advanced.html',
-      dictionary, context_instance=RequestContext(request))
+    return render(request, 'repository/base_search-advanced.html', dictionary)
 
 
 def log_user_in(request):
@@ -168,14 +162,79 @@ def log_user_in(request):
     else:
         form = AuthenticationForm()
 
-    return render_to_response('repository/login.html',
-      {'form': form, 'error': error_message},
-      context_instance=RequestContext(request))
+    dictionary = {'form': form, 'error': error_message}
+
+    return render(request, 'repository/base_login.html', dictionary)
 
 
 def log_user_out(request):
     """Log a currently logged in user out."""
     logger.info('User "{}" has logged out.'.format(request.user))
     logout(request)
-    return render_to_response('repository/frontpage.html',
-      context_instance=RequestContext(request))
+    return render(request, 'repository/base_frontpage.html')
+
+
+@login_required(login_url='/accounts/login')
+def upload(request):
+    """Render a form for submitting new corpus descriptions."""
+    if request.method == 'POST':
+        form = CorpusDescriptionForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_corpus = form.save(commit=False)
+            new_corpus.contributor = request.user
+            new_corpus.save()
+
+            logger.info(
+              'New corpus description uploaded by user "{}". Title: "{}".'
+              .format(new_corpus.contributor, new_corpus.name.encode('utf-8')))
+
+            messages.success(request,
+              'Corpus description uploaded successfully! '
+              'Just enter more if you want.')
+        else:
+            logger.warning(
+              'User "{}" tried to upload a new corpus description but failed.'
+              .format(request.user))
+
+            messages.error(request,
+              'Upload has failed! Please fill in all required slots.')
+    else:
+        form = CorpusDescriptionForm()
+
+    dictionary = {'form': form}
+
+    return render(request, 'repository/base_upload.html', dictionary)
+
+
+@login_required(login_url='/accounts/login')
+def feedback(request):
+    """Render a form for submitting new feedback messages."""
+    if request.method == 'POST':
+        form = FeedbackMessageForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_feedback = form.save(commit=False)
+            new_feedback.user = request.user
+            # The status of a new message is set to 'Open' by default
+            new_feedback.status = 'O'
+            new_feedback.save()
+
+            logger.info(
+              'New feedback message uploaded by user "{}". Subject: "{}".'
+              .format(new_feedback.user, new_feedback.subject.encode('utf-8')))
+
+            messages.success(request,
+              'Thanks for your feedback! We will deal with it soon.')
+        else:
+            logger.warning(
+              'User "{}" tried to send a feedback message but failed.'
+              .format(request.user))
+
+            messages.error(request,
+              'Feedback submission has failed! '
+              'Please fill in all required slots.')
+    else:
+        form = FeedbackMessageForm
+
+    dictionary = {'form': form}
+
+    return render(request, 'repository/base_feedback.html', dictionary)

@@ -1,0 +1,60 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Corpus List by Location{% endblock title %}
+
+{% block page-header %}<h1>Browse <small>corpus descriptions</small></h1>{% endblock page-header %}
+
+{% block browse %}<li class="active">{% endblock browse %}
+
+{% block content %}
+    {% if location == "coli" %}
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                <li class="active"><a href="#">CoLi</a></li>
+                <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+            </ul>
+        </div>
+
+    {% endif %}
+
+    {% if location == "dfki" %}
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+                <li class="active"><a href="#">DFKI</a></li>
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="accordion" id="accordion2">
+        {% for corpus in corpus_list %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ corpus.id }}">
+                        {{ corpus.name }}
+                    </a>
+                </div>
+                <div id="{{ corpus.id }}" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        <p><strong>Language:</strong> {{ corpus.get_language_display }}</p>
+                        <p><strong>Annotation:</strong> {{ corpus.annotation|yesno:"Yes, No, Maybe" }}</p>
+                        <p><a href="{% url corpus-details corpus.id %}">Detailed Information</a></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% comment %}
+    {% include "repository/list_insertion.html" %}
+    {% endcomment %}
+
+    <div class="pagination pagination-centered">
+        <ul>
+            {% include "repository/pagination.html" %}
+        </ul>
+    </div>
+
+{% endblock content %}

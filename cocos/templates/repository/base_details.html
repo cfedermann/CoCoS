@@ -1,0 +1,79 @@
+{% extends "repository/base.html" %}
+
+{% block title %}Corpus Collection System (CoCoS) - Corpus Details{% endblock title %}
+
+{% block page-header %}<h1>Details <small>{{ corpus.name }}</small></h1>{% endblock page-header %}
+
+{% block browse %}<li class="active">{% endblock browse %}
+
+{% block content %}
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+            <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+            <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+        </ul>
+    </div>
+
+    <table class="table table-striped table-bordered">
+
+        <tbody>
+        <tr>
+            <td>Location:</td>
+            <td>{{ corpus.get_location_display }}</td>
+        </tr>
+
+        {% if corpus.coli_path %}
+            <tr>
+                <td>Path on CoLi server:</td>
+                <td>{{ corpus.coli_path }}</td>
+            </tr>
+        {% endif %}
+
+        {% if corpus.dfki_path %}
+            <tr>
+                <td>Path on DFKI server:</td>
+                <td>{{ corpus.dfki_path }}</td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <td>Language:</td>
+            <td>{{ corpus.get_language_display }}</td>
+        </tr>
+
+        <tr>
+            <td>Annotation:</td>
+            <td>{{ corpus.annotation|yesno:"Yes, No, Maybe" }}</td>
+        </tr>
+
+        {% if corpus.description %}
+            <tr>
+                <td>Description:</td>
+                <td>{{ corpus.description|linebreaksbr }}</td>
+            </tr>
+        {% endif %}
+
+        {% if corpus.comment %}
+            <tr>
+                <td>Comment:</td>
+                <td>{{ corpus.comment|linebreaksbr }}</td>
+            </tr>
+        {% endif %}
+
+        {% if corpus.license_holder %}
+            <tr>
+                <td>License holder:</td>
+                <td>{{ corpus.license_holder }}</td>
+            </tr>
+        {% endif %}
+
+        {% if corpus.contact %}
+            <tr>
+                <td>Contact:</td>
+                <td><a href="mailto:{{ corpus.contact }}">{{ corpus.contact }}</a></td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock content %}
