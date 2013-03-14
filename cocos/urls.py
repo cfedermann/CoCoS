@@ -7,11 +7,13 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 from django.conf.urls.defaults import include, patterns, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
-from repository.views import CorpusListView, CorpusByLocationView, \
+
+from cocos.repository.views import CorpusListView, CorpusByLocationView, \
   CorpusDetailView, MainPageView
 
 admin.autodiscover()
 
+# pylint: disable-msg=E1120
 urlpatterns = patterns('repository.views',
 
     url(r'^$', MainPageView.as_view(), name='cocos-frontpage'),
