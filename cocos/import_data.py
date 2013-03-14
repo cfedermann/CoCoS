@@ -5,11 +5,14 @@ Authors: Christian Federmann <cfedermann@dfki.de>,
 """
 
 import os
-import settings
 import sys
 
 from django.core import serializers
 from django.core.management import setup_environ
+
+# pylint: disable-msg=W0403
+import settings
+
 setup_environ(settings)
 
 def usage():
