@@ -14,8 +14,8 @@
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#">All Corpora</a></li>
-            <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
-            <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+            <li><a href="{% url 'corpus-list-by-location' location='coli' page=1 %}">CoLi</a></li>
+            <li><a href="{% url 'corpus-list-by-location' location='dfki' page=1 %}">DFKI</a></li>
         </ul>
     </div>
 
@@ -32,7 +32,7 @@
                         <p><strong>Location:</strong> {{ corpus.get_location_display }}</p>
                         <p><strong>Language:</strong> {{ corpus.get_language_display }}</p>
                         <p><strong>Annotation:</strong> {{ corpus.annotation|yesno:"Yes, No, Maybe" }}</p>
-                        <p><a href="{% url corpus-details corpus.id %}">Detailed Information</a></p>
+                        <p><a href="{% url 'corpus-details' corpus.id %}">Detailed Information</a></p>
                     </div>
                 </div>
             </div>

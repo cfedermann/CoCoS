@@ -13,9 +13,9 @@
 {% block content %}
     <div class="tabbable">
         <ul class="nav nav-tabs">
-            <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
-            <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
-            <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+            <li><a href="{% url 'corpus-list' page=1 %}">All Corpora</a></li>
+            <li><a href="{% url 'corpus-list-by-location' location='coli' page=1 %}">CoLi</a></li>
+            <li><a href="{% url 'corpus-list-by-location' location='dfki' page=1 %}">DFKI</a></li>
         </ul>
     </div>
 

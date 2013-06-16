@@ -14,9 +14,9 @@
     {% if location == "coli" %}
         <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
+                <li><a href="{% url 'corpus-list' page=1 %}">All Corpora</a></li>
                 <li class="active"><a href="#">CoLi</a></li>
-                <li><a href="{% url corpus-list-by-location location='dfki' page=1 %}">DFKI</a></li>
+                <li><a href="{% url 'corpus-list-by-location' location='dfki' page=1 %}">DFKI</a></li>
             </ul>
         </div>
 
@@ -25,8 +25,8 @@
     {% if location == "dfki" %}
         <div class="tabbable">
             <ul class="nav nav-tabs">
-                <li><a href="{% url corpus-list page=1 %}">All Corpora</a></li>
-                <li><a href="{% url corpus-list-by-location location='coli' page=1 %}">CoLi</a></li>
+                <li><a href="{% url 'corpus-list' page=1 %}">All Corpora</a></li>
+                <li><a href="{% url 'corpus-list-by-location' location='coli' page=1 %}">CoLi</a></li>
                 <li class="active"><a href="#">DFKI</a></li>
             </ul>
         </div>
@@ -44,7 +44,7 @@
                     <div class="accordion-inner">
                         <p><strong>Language:</strong> {{ corpus.get_language_display }}</p>
                         <p><strong>Annotation:</strong> {{ corpus.annotation|yesno:"Yes, No, Maybe" }}</p>
-                        <p><a href="{% url corpus-details corpus.id %}">Detailed Information</a></p>
+                        <p><a href="{% url 'corpus-details' corpus.id %}">Detailed Information</a></p>
                     </div>
                 </div>
             </div>

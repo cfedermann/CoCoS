@@ -23,9 +23,9 @@
     <div class="navbar">
         <div class="navbar-inner">
             <div class="container">
-                <h3><a class="brand" href="{% url cocos-frontpage %}">CoCoS</a></h3>
+                <h3><a class="brand" href="{% url 'cocos-frontpage' %}">CoCoS</a></h3>
                 <ul class="nav">
-                    {% block browse %}<li>{% endblock browse %}<a href="{% url corpus-list page=1 %}"><i class="icon-list-alt icon-white"></i> Browse</a></li>
+                    {% block browse %}<li>{% endblock browse %}<a href="{% url 'corpus-list' page=1 %}"><i class="icon-list-alt icon-white"></i> Browse</a></li>
                     {% block search %}<li class="dropdown">{% endblock search %}
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-search icon-white"></i> Search <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -35,11 +35,11 @@
                     </li>
                 
                     {% if not user.is_authenticated %}
-                        {% block login %}<li>{% endblock login %}<a href="{% url login-form %}"><i class="icon-user icon-white"></i> Login</a></li>
+                        {% block login %}<li>{% endblock login %}<a href="{% url 'login-form' %}"><i class="icon-user icon-white"></i> Login</a></li>
                     {% else %}
-                        {% block upload %}<li>{% endblock upload %}<a href="{% url upload-form %}"><i class="icon-upload icon-white"></i> Upload</a></li>
-                        {% block feedback %}<li>{% endblock feedback %}<a href="{% url feedback-form %}"><i class="icon-comment icon-white"></i> Feedback</a></li>
-                        {% block logout %}<li>{% endblock logout %}<a href="{% url logout %}"><i class="icon-remove-circle icon-white"></i> Logout</a></li>
+                        {% block upload %}<li>{% endblock upload %}<a href="{% url 'upload-form' %}"><i class="icon-upload icon-white"></i> Upload</a></li>
+                        {% block feedback %}<li>{% endblock feedback %}<a href="{% url 'feedback-form' %}"><i class="icon-comment icon-white"></i> Feedback</a></li>
+                        {% block logout %}<li>{% endblock logout %}<a href="{% url 'logout' %}"><i class="icon-remove-circle icon-white"></i> Logout</a></li>
                     {% endif %}
 
                 </ul>
