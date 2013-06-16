@@ -28,6 +28,7 @@ ADVANCED_FIELDS = ('name', 'location', 'language', 'description',
   'comment', 'license_holder', 'contact')
 
 
+# pylint: disable-msg=R0901
 class CorpusListView(ListView):
     """Return a generic view for listing the corpora in the database."""
     model = CorpusDescription
@@ -36,7 +37,7 @@ class CorpusListView(ListView):
     template_name = 'repository/base_list.html'
 
 
-# pylint: disable-msg=R0901
+# pylint: disable-msg=R0901,E1101
 class CorpusByLocationView(CorpusListView):
     """Return a generic view for listing corpora according to their location"""
     template_name = 'repository/base_list-by-location.html'
