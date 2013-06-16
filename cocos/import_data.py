@@ -7,8 +7,6 @@ Authors: Christian Federmann <cfedermann@gmail.com>,
 import os
 import sys
 
-from django.core.management import setup_environ
-
 def usage():
     """Prints usage instructions to screen."""
     print "\nUsage: python import_data.py <filename.{xml|json}>\n"
@@ -49,12 +47,6 @@ if __name__ == "__main__":
     os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
     PROJECT_HOME = os.path.normpath(os.getcwd() + "/..")
     sys.path.append(PROJECT_HOME)
-    
-    # We have just added cocos to the system path list, hence this works.
-    from cocos import settings
-    
-    # Setup Django environment using settings module.
-    setup_environ(settings)
     
     # Import data using import_data() method.
     import_data(sys.argv[1])

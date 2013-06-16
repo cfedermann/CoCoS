@@ -8,7 +8,6 @@ import os
 import sys
 
 from datetime import datetime
-from django.core.management import setup_environ
 
 def usage():
     """Prints usage instructions to screen."""
@@ -55,11 +54,7 @@ if __name__ == "__main__":
     sys.path.append(PROJECT_HOME)
     
     # We have just added cocos to the system path list, hence this works.
-    from cocos import settings
     from cocos.repository.models import CorpusDescription, FeedbackMessage
-    
-    # Setup Django environment using settings module.
-    setup_environ(settings)
     
     # Export data using export_data() method.
     export_data(sys.argv[1])
