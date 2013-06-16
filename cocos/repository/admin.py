@@ -5,7 +5,7 @@ Authors: Christian Federmann <cfedermann@gmail.com>,
 """
 
 from django.contrib import admin
-from repository.models import CorpusDescription, FeedbackMessage
+from cocos.repository.models import CorpusDescription, FeedbackMessage
 
 class CorpusDescriptionAdmin(admin.ModelAdmin):
     """
@@ -13,6 +13,7 @@ class CorpusDescriptionAdmin(admin.ModelAdmin):
     CorpusDescription model admin interface.
     """
 
+    # pylint: disable-msg=E1002
     def has_change_permission(self, request, obj=None):
         """
         Return True if editing an object is permitted;
@@ -78,7 +79,7 @@ class FeedbackMessageAdmin(admin.ModelAdmin):
     This class provides formatting options for the
     FeedbackMessage model admin interface.
     """
-
+    # pylint: disable-msg=E1002
     def has_change_permission(self, request, obj=None):
         """
         Return True if editing an object is permitted;
